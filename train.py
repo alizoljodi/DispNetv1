@@ -290,7 +290,8 @@ def train(state, number):
     tf.reset_default_graph()
     run_meta = tf.RunMetadata()
     g = tf.Graph()
-    with tf.device('/gpu:0'):
+    strategy = tf.distribute.MirroredStrategy()
+    with strategy.scope():
         with g.as_default():
 
             limage = tf.placeholder(tf.float32, [None, FLAGS.patch_size, FLAGS.patch_size, num_channels], name='limage')
