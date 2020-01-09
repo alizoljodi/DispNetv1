@@ -16,8 +16,8 @@ now=datetime.datetime.now()
 flags = tf.app.flags
 
 flags.DEFINE_integer('batch_size', 8, 'Batch size.')
-flags.DEFINE_integer('num_iter', 10, 'Total training iterations')
-flags.DEFINE_string('model_dir', 'C:\\Users\\Mohammad\\Desktop\\version 3\\testss', 'Trained network dir')
+flags.DEFINE_integer('num_iter', 10000, 'Total training iterations')
+flags.DEFINE_string('model_dir', 'C:\\Users\\Mohammad\\PycharmProjects\\final_1D\\test', 'Trained network dir')
 flags.DEFINE_string('data_version', 'kitti2015', 'kitti2012 or kitti2015')
 flags.DEFINE_string('data_root', 'C:\\Users\\Mohammad\\Downloads\\data_scene_flow\\training', 'training dataset dir')
 flags.DEFINE_string('util_root', 'C:\\Users\\Mohammad\\Downloads\\data_scene_flow', 'Binary training files dir')
@@ -27,7 +27,7 @@ flags.DEFINE_integer('eval_size', 200, 'number of evaluation patchs per iteratio
 flags.DEFINE_integer('num_tr_img', 160, 'number of training images')
 flags.DEFINE_integer('num_val_img', 40, 'number of evaluation images')
 flags.DEFINE_integer('patch_size', 37, 'training patch size')
-flags.DEFINE_integer('num_val_loc', 10, 'number of validation locations')
+flags.DEFINE_integer('num_val_loc', 50000, 'number of validation locations')
 flags.DEFINE_integer('disp_range', 201, 'disparity range')
 flags.DEFINE_string('phase', 'train', 'train or evaluate')
 
@@ -329,7 +329,7 @@ def train(state, number):
                 total_time+=t2-t1
                 losses.append(mini_loss)
 
-                if it % 1 == 0:
+                if it % 100 == 0:
                     print('Loss at step: %d: %.6f' % (it, mini_loss))
                     saver.save(session, os.path.join(path, 'model.ckpt'), global_step=snet['global_step'])
                     train_summary = session.run(loss_summary,
@@ -348,7 +348,7 @@ def train(state, number):
         if flops is not None:
             t_flops=flops.total_float_ops
             print('wetwyy', t_flops)
-    return t_flops,total_time
+    return t_flops,total_time/1000.0
 
 
 def evaluate(state,number):
